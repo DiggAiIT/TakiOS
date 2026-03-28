@@ -15,6 +15,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Allow agents/workflows to read code and write back (e.g. memory updates, dream-cycle)
+permissions:
+  contents: write
+  pull-requests: read
+
 jobs:
   backend:
     runs-on: ubuntu-latest

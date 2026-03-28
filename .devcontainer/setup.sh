@@ -37,6 +37,21 @@ echo "✅ Node deps installed"
 # ── 4. Git config convenience helpers ────────────────────────────────────────
 git config --global --add safe.directory /workspaces/TakiOS 2>/dev/null || true
 
+# Configure git credential helper using GITHUB_PAT_TOKEN (if available)
+# This allows Copilot agents to commit and push from inside Codespaces
+if [ -n "${GITHUB_PAT_TOKEN:-}" ]; then
+  REPO_URL=$(git remote get-url origin 2>/dev/null || echo "")
+  if [ -n "$REPO_URL" ]; then
+    # Inject PAT into remote URL for passwordless push
+    AUTH_URL=$(echo "$REPO_URL" | sed "s|https://|https://x-access-token:${GITHUB_PAT_TOKEN}@|")
+    git remote set-url origin "$AUTH_URL"
+    echo "✅ Git remote configured with PAT token for agent commits"
+  fi
+  # Also configure gh CLI with the PAT
+  echo "${GITHUB_PAT_TOKEN}" | gh auth login --hostname github.com --git-protocol https --with-token 2>/dev/null && \
+    echo "✅ GitHub CLI authenticated via GITHUB_PAT_TOKEN"
+fi
+
 echo ""
 echo "✅ TakiOS Codespaces Setup complete!"
 echo ""

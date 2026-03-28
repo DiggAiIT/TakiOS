@@ -48,6 +48,9 @@
     },
     "SECRET_KEY": {
       "description": "JWT Secret Key for the backend"
+    },
+    "GITHUB_PAT_TOKEN": {
+      "description": "GitHub PAT (repo + workflow scopes) — used by Copilot agents to commit back to the repo"
     }
   },
 
