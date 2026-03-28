@@ -1,0 +1,31 @@
+# Planning Workflow
+# Triggered manually or by complex task detection
+# Executor: Planner agent (Opus tier)
+
+name: planning
+trigger:
+  manual: true
+  complexity_threshold: high
+
+steps:
+  - name: load-context
+    action: read memory/context.mmd
+    purpose: "Avoid rediscovering known information"
+
+  - name: analyze-requirement
+    action: planner.md
+    model: opus
+    input: "{{user_requirement}}"
+
+  - name: layer-mapping
+    action: map tasks to L01-L13
+    validate: "No cross-layer imports, EventBus only"
+
+  - name: risk-assessment
+    action: check migration conflicts, API breaks
+    output: risk_report
+
+  - name: output-plan
+    action: write memory/context.mmd
+    format: structured JSON tasks
+    max_tasks: 50

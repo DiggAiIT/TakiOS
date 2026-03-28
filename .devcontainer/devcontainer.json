@@ -1,0 +1,104 @@
+{
+  "name": "TakiOS Dev Environment",
+
+  // Universal image: Python 3.12 + Node 20 + Docker CLI pre-installed
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+
+  // Add Docker-Compose so we can start the infrastructure stack
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12",
+      "installTools": true
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20",
+      "nvmVersion": "latest"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "dockerDashComposeVersion": "v2"
+    }
+  },
+
+  // Forward all service ports to the Codespace
+  "forwardPorts": [3000, 8000, 5432, 6379, 9000, 9001],
+  "portsAttributes": {
+    "3000": { "label": "Frontend (Next.js)", "onAutoForward": "notify" },
+    "8000": { "label": "Backend API (FastAPI)", "onAutoForward": "notify" },
+    "5432": { "label": "PostgreSQL", "onAutoForward": "silent" },
+    "6379": { "label": "Redis", "onAutoForward": "silent" },
+    "9000": { "label": "MinIO S3", "onAutoForward": "silent" },
+    "9001": { "label": "MinIO Console", "onAutoForward": "notify" }
+  },
+
+  // Copy .env.example → .env (if no .env exists), then install all deps
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+
+  // Start infrastructure services every time the Codespace starts
+  "postStartCommand": "docker compose up postgres redis minio -d --wait 2>/dev/null || true",
+
+  // Codespaces secrets to inject as environment variables
+  // Set these under: github.com → Settings → Codespaces → Secrets
+  "secrets": {
+    "ANTHROPIC_API_KEY": {
+      "description": "Anthropic API Key for AI features"
+    },
+    "OPENAI_API_KEY": {
+      "description": "OpenAI API Key (fallback AI provider)"
+    },
+    "SECRET_KEY": {
+      "description": "JWT Secret Key for the backend"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // Python
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.black-formatter",
+        "charliermarsh.ruff",
+        // Frontend
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "ms-vscode.vscode-typescript-next",
+        // Database
+        "cweijan.vscode-postgresql-client2",
+        // Docker & Infrastructure
+        "ms-azuretools.vscode-docker",
+        // AI & Copilot
+        "github.copilot",
+        "github.copilot-chat",
+        // General DX
+        "eamodio.gitlens",
+        "yzhang.markdown-all-in-one"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.formatting.provider": "black",
+        "[python]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "ms-python.black-formatter"
+        },
+        "[typescript]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[typescriptreact]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "editor.formatOnSave": true,
+        "terminal.integrated.defaultProfile.linux": "zsh"
+      }
+    }
+  },
+
+  // Remount the workspace folder
+  "workspaceFolder": "/workspaces/TakiOS",
+
+  // Run as non-root user (security best practice)
+  "remoteUser": "codespace"
+}

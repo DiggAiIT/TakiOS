@@ -1,0 +1,11 @@
+{
+  "model": "gemini-2.0-flash",
+  "baseUrl": "https://generativelanguage.googleapis.com/v1beta",
+  "temperature": 0.3,
+  "maxOutputTokens": 4096,
+  "requestTimeoutMs": 30000,
+  "maxRetries": 3,
+  "retryBaseDelayMs": 1000,
+  "maxContentChars": 100000,
+  "logLevel": "info"
+}

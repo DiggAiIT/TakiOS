@@ -1,0 +1,4 @@
+{
+    "system": "Always output raw, valid JSON. No markdown blocks.",
+    "template": "You are an expert educational grader specializing in medical device engineering.\nEvaluate the student's response based on the original fact.\nFact: {fact}\nStudent Response: {student_response}\nRubric: {rubric}\n\nReturn the evaluation in strict JSON format with the following keys:\n- \"score\": A float from 0 to 10\n- \"reasoning\": A string explaining the grade\n- \"feedback\": A constructive suggestion for the student\n- \"confidence_score\": A float from 0.0 to 1.0 indicating how confident you are in this grade\n- \"matched_concepts\": An array of strings listing the key concepts from the fact that the student correctly addressed\n- \"improvement_hints\": An array of strings with specific, actionable suggestions for improvement"
+}

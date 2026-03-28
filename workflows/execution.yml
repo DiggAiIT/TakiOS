@@ -1,0 +1,31 @@
+# Execution Workflow
+# Triggered by Planner output
+# Executor: Executor agent (Sonnet tier)
+
+name: execution
+trigger:
+  dependency: planning
+  manual: true
+
+steps:
+  - name: load-plan
+    action: read memory/context.mmd
+    filter: "status=pending"
+
+  - name: execute-task
+    action: executor.md
+    model: sonnet
+    loop: "for each task in plan order"
+    steps:
+      - read affected files
+      - implement changes
+      - validate (lint, typecheck, tests)
+      - mark task completed
+
+  - name: update-memory
+    action: append to memory/context.mmd
+    content: "task completion metrics"
+
+  - name: trigger-dream
+    condition: "session_count >= threshold"
+    action: workflows/dream-cycle.yml

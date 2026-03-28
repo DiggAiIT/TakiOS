@@ -1,0 +1,87 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+env/
+
+# Node.js
+node_modules/
+.next/
+out/
+.turbo/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+test-results/
+playwright-report/
+
+# Database
+*.db
+*.sqlite3
+
+# MinIO data
+minio_data/
+
+# Redis
+dump.rdb
+
+# Alembic
+backend/alembic/versions/__pycache__/
+
+# Build artifacts
+*.log
+
+# Coverage reports (generated, not committed)
+coverage.json
+coverage.xml
+*.coveragerc
+.coverage.*
+
+# Temporary / system files
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+
+# Python eggs / dist (already above but explicit)
+backend/takios_backend.egg-info/
+
+# Node.js build output
+frontend/.next/
+frontend/out/
+
+# Secrets (never commit)
+.env
+.env.local
+.env.*.local
+# Exception: template is always committed
+!.env.example

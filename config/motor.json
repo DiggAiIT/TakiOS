@@ -1,0 +1,9 @@
+{
+  "dreamIntervalMs": 43200000,
+  "checkIntervalMs": 300000,
+  "sessionThreshold": 50,
+  "maxIndexLines": 200,
+  "maxLineChars": 120,
+  "logLevel": "info",
+  "note": "Deprecated: motor.cjs reads memory/motor.json only"
+}

@@ -1,0 +1,23 @@
+# Dream Cycle Workflow
+# Trigger: timer (12h) OR session count threshold (50)
+# Executor: bin/lib/motor.cjs
+
+name: dream-cycle
+trigger:
+  schedule: "0 */12 * * *"
+  usage_threshold: 50
+
+steps:
+  - name: scan-memory
+    action: read memory/
+    filter: "*.json"
+
+  - name: load-index
+    action: read memory/context.mmd
+
+  - name: compact
+    action: run bin/lib/motor.cjs
+    mode: dream-cycle
+
+  - name: archive
+    action: move processed sessions to memory/archive/
